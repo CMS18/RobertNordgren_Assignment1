@@ -1,7 +1,34 @@
-﻿@{
+﻿@model ALM_Assignment1.ViewModels.CustomerAccountsViewModel
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Robert's Bank</h1>
+
+    @foreach (var customer in Model.CustomerAccounts)
+    {
+        <div class="customer-container">
+            <div>
+                <h2>@customer.Customer.Name</h2>
+            </div>
+            <table class="accounts-table">
+                <thead>
+                    <tr>
+                        <th>AccountID</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var account in customer.Accounts)
+                    {
+                        <tr>
+                            <td>@account.AccountID</td>
+                            <td>@account.Balance.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
