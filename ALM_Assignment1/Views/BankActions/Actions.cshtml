@@ -1,0 +1,31 @@
+﻿@if (TempData.Keys != null && TempData.Keys.Count() > 0)
+{
+    @if (TempData["Error"] != null)
+    {
+        {
+            var error = TempData["Error"];
+            <div class="alert alert-danger">@error</div>
+        }
+    }
+    else if (TempData["Success"] != null)
+    {
+        {
+            var message = TempData["Success"];
+            <div class="alert alert-success">@message</div>
+        }
+    }
+}
+
+
+<form method="post">
+    <div class="form-group">
+        <label class="form-check-label">Account Number</label>
+        <input class="form-control" name="AccountID" />
+    </div>
+    <div class="form-group">
+        <label>Amount</label>
+        <input class="form-control" name="Amount" />
+    </div>
+    <input class="btn btn-primary" type="submit" value="Deposit" asp-action="Deposit" asp-controller="BankActions" />
+    <input class="btn btn-primary" type="submit" value="Withdraw" asp-action="Withdraw" asp-controller="BankActions" />
+</form>

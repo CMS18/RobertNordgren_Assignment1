@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ALM_Assignment1.Models
+namespace BankApp.Data
 {
     public interface IBankRepository
     {
         IEnumerable<Customer> GetCustomers();
         IEnumerable<Account> GetAccounts();
         Account GetAccounts(int accountid);
-        void Withdraw(Account account, decimal amount);
-        void Deposit(Account account, decimal amount);
+        void Withdraw(int accountid, decimal amount);
+        void Deposit(int accountid, decimal amount);
     }
 
     public class BankRepository : IBankRepository
@@ -43,9 +43,9 @@ namespace ALM_Assignment1.Models
             return Customers;
         }
 
-        public void Withdraw(Account account, decimal amount)
+        public void Withdraw(int accountid, decimal amount)
         {
-            //var account = GetAccounts().SingleOrDefault(x => x.AccountID == account.);
+            var account = GetAccounts().SingleOrDefault(x => x.AccountID == accountid);
 
             if(account.Balance < amount)
             {
@@ -56,9 +56,9 @@ namespace ALM_Assignment1.Models
             }
         }
 
-        public void Deposit(Account account, decimal amount)
+        public void Deposit(int accountid, decimal amount)
         {
-            //var account = GetAccounts(accountid);
+            var account = GetAccounts(accountid);
             account.Balance += amount;
         }
 
