@@ -33,8 +33,18 @@ namespace BankApp.UI.Controllers
                 var account = repository.GetAccounts(accountid);
                 if (account != null)
                 {
-                    repository.Deposit(account, result);
+                    try
+                    {
+                        repository.Deposit(account, result);
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["Error"] = ex.InnerException;
+                        return RedirectToAction("Actions");
+                    }
+
                     TempData["Success"] = "Amount deposited!";
+
                 } else
                 {
                     TempData["Error"] = "Incorrect account number";
@@ -58,7 +68,15 @@ namespace BankApp.UI.Controllers
                 var account = repository.GetAccounts(accountid);
                 if (account != null)
                 {
-                    repository.Withdraw(account, result);
+                    try
+                    {
+                        repository.Withdraw(account, result);
+                    }
+                    catch (Exception ex)
+                    {
+                        TempData["Error"] = "Amount exceeds available funds";
+                        return RedirectToAction("Actions");
+                    }
                     TempData["Success"] = "Amount withdrawn!";
                 }
                 else
