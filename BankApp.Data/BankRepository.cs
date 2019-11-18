@@ -4,33 +4,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ALM_Assignment1.Models
+namespace BankApp.Data
 {
     public interface IBankRepository
     {
         IEnumerable<Customer> GetCustomers();
         IEnumerable<Account> GetAccounts();
         Account GetAccounts(int accountid);
-        void Withdraw(Account account, decimal amount);
-        void Deposit(Account account, decimal amount);
+        void Withdraw(int accountid, decimal amount);
+        void Deposit(int accountid, decimal amount);
     }
 
     public class BankRepository : IBankRepository
     {
-        public static List<Customer> Customers = new List<Customer>()
+        public static IEnumerable<Customer> Customers = new List<Customer>
         {
             new Customer { CustomerID = 1, Name = "Steve Tabernackle" },
             new Customer { CustomerID = 2, Name = "Sarah Andrews" },
-            new Customer { CustomerID = 3, Name = "Donna Carter" }
+            new Customer { CustomerID = 3, Name = "Donna Carter" },
         };
 
-        public static List<Account> Accounts = new List<Account>()
+        public IEnumerable<Account> Accounts = new List<Account>
         {
             new Account { AccountID = 1, CustomerID = 1, Balance = 25543M },
             new Account { AccountID = 2, CustomerID = 2, Balance = 8403M },
             new Account { AccountID = 3, CustomerID = 3, Balance = 323M },
             new Account { AccountID = 4, CustomerID = 1, Balance = 4235662M },
-            new Account { AccountID = 5, CustomerID = 2, Balance = 47034M }
+            new Account { AccountID = 5, CustomerID = 2, Balance = 47034M },
         };
 
         public IEnumerable<Account> GetAccounts()
@@ -43,8 +43,10 @@ namespace ALM_Assignment1.Models
             return Customers;
         }
 
-        public void Withdraw(Account account, decimal amount)
+        public void Withdraw(int accountid, decimal amount)
         {
+            var account = GetAccounts().SingleOrDefault(x => x.AccountID == accountid);
+
             if(account.Balance < amount)
             {
                 throw new InsufficientFundsException();
@@ -54,8 +56,9 @@ namespace ALM_Assignment1.Models
             }
         }
 
-        public void Deposit(Account account, decimal amount)
+        public void Deposit(int accountid, decimal amount)
         {
+            var account = GetAccounts(accountid);
             account.Balance += amount;
         }
 
